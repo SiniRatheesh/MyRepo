@@ -1,0 +1,496 @@
+<!DOCTYPE HTML>
+<html ng-app="MyApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    
+    <!--    comikka   ----->
+    <meta name="propeller" content="9d22fcb4aedb7661bc4c09cf217a2893" />
+    <meta name="viewport"  content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:type"               content="article"/>
+    <meta property="og:title"              content="Comikka" />
+    <meta property="og:description"        content="Mobile Comics" />
+    <meta property="og:image"              content="http://www.comikka.com/images/ComikkaLogo_V10smaller.jpg"/>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+	
+	<!-- CSS---->
+    
+    <link rel="stylesheet" type="text/css" href="../js/lib/jqmobile/css/themes/default/jquery.mobile-1.2.0.min.css" />
+    <link rel="stylesheet" type="text/css" href="../js/lib/masonry/comikmasnry.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css"  />
+	<link rel="stylesheet" type="text/css" href="../css/home-main.css" />    
+    <link rel="stylesheet" type="text/css" href="../js/lib/bootstrap-3.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../js/lib/bootstrap-3.0.2/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="../js/lib/bootstrap-text-editor/bootstrap-wysihtml5-0.0.2.css" ></link>
+    <link rel="stylesheet" type="text/css" href="../js/lib/bootstrap-text-editor/wysiwyg-color.css"></link>
+		
+	<!-- Scripts ---->
+		
+	<script type="text/javascript" src="../js/lib/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../js/lib/common.js"></script>
+	<script type="text/javascript" src="../js/lib/masonry/masonry.pkgd.min.js"></script>
+	<script type="text/javascript" src="../js/lib/jqmobile/jqm.autoComplete.min-1.3.js"></script>
+	<script type="text/javascript" src="../js/lib/jqmobile/js/jquery.mobile-1.2.0.min.js"></script>
+	<script type="text/javascript" src="../js/lib/bootstrap-3.0.2/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/lib/solr/solr-common.js"></script>
+	<script type="text/javascript" src="../js/lib/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../js/lib/paging/lazy-loading.js"></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular.min.js" ></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular-bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular-translate.min.js" ></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular-translate-loader-static-files.min.js" ></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular-translate-loader-url.min.js" ></script>
+	<script type="text/javascript" src="../js/lib/jquery-cookie-master/src/jquery.cookie.js"></script>
+	<script type="text/javascript" src="../js/lib/jquery.blImageCenter.js"></script>
+	<script type="text/javascript" src="../js/lib/angular/js/script.js"> </script>
+	<script type="text/javascript" src="../js/lib/imageload-common.js"></script>
+	<script type="text/javascript" src="../js/lib/ads.js"></script>
+	
+	<script src="../js/home-main.js"></script>
+	
+	
+	
+<!--
+<script type="text/javascript" src="js/jquery.corner.js"></script>
+<script type="text/javascript" src="js/dropshadow.jquery.plugin.js"></script>
+<script src="jquery-ui/jquery-ui-1.9.2.custom.min.js"> </script>  -->
+<!-- <script type="text/javascript" src="jqui/js/jquery-ui-1.8.20.custom.min.js"></script> -->
+<!-- <script type="text/javascript" src="js/millenialMedia.js"></script> 
+<script type="text/javascript" src="js/querystring-0.9.0-min.js"></script>
+
+-->
+<!-- <script type="text/javascript" src="js/paging/jquery-paged-scroll.js"></script> -->
+    
+    
+    
+	
+	
+	<script id="personView" type="text/x-jquery-tmpl">
+		<li class="gallery-item">
+			<img src="${avatar}" style="height:150px; width:150px"/>
+			<div style="float:right;">
+				<label style="width:100%">{{if screenName }} ${screenName} {{else}} .  {{/if }} </label>
+				<a href="#"  data-inline="true" data-theme="b" onclick="gotoComicDescrption('${id}')">
+					<img src="../img/whiteQmark.jpg" style="height:20px; width:20px"/>
+				</a>
+			</div>
+		</li>
+	</script>
+
+	<script id="keywordSearchView" type="text/x-jquery-tmpl">
+		<li class="gallery-item pin">
+			<div>
+				<a href="#"  data-inline="true" data-theme="b" onclick="loadArts('${id}',${artcount})">
+					<img src="${avatar}" style="height:150px; width:150px; margin-top: 5px;"/>
+				</a>	
+			</div>
+			<div style="float:left;width:86% ;" >
+				<label style="width:85%"> ${screenName} </label>
+			</div>
+			<div style="float:right;">
+				<a href="#"  data-inline="true" data-theme="b" onclick="gotoComicDescrption('${id}')">
+					<img src="../img/whiteQmark.jpg" style="height:20px; width:20px"/>
+				</a>
+			</div>
+		</li>
+	</script>
+
+	<script id="comicViewTmpl" type="text/x-jquery-tmpl">
+		<li  id="li-${id}" data-id="${id}" sortorder="${sortOrder}" data-json="${paramL($item)}">
+			<a   alt="${fileName}">
+				<img src="${s3ThumbUrl}" style=" height: 145px;width: 155px;margin-left: 10px;margin-top: 8px;"alt="${fileName}"/>
+			</a>
+		</li>
+	</script>
+	
+</head>
+<body style="margin: 0" ng-controller='localeController'>
+	<div id="fb-root"> </div>
+	<script> 
+	 	window.fbAsyncInit = function() {
+		    FB.init({
+		      appId      : '1471415316497177',
+		      xfbml      : true,
+		      version    : 'v2.4'
+		    });
+		};
+    	(function(d, s, id) {
+    	     var js, fjs = d.getElementsByTagName(s)[0];
+    	     if (d.getElementById(id)) return;
+    	     js = d.createElement(s); js.id = id;
+    	     js.src = "//connect.facebook.net/en_US/sdk.js";
+    	     fjs.parentNode.insertBefore(js, fjs);
+    	}
+    	(document, 'script', 'facebook-jssdk'));
+   </script>
+	
+	<div data-role="page" class="type-index" id="home">
+		<div id="home_div" >
+			<nav class="navbar navbar-default" role="navigation">
+  				<!-- Brand and toggle get grouped for better mobile display -->
+  				<div class="navbar-header">
+    				<a  class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      					<span class="sr-only">Toggle navigation</span>
+      					<span class="icon-bar"></span>
+      					<span class="icon-bar"></span>
+      					<span class="icon-bar"></span>
+				    </a>
+   					<a class="navbar-brand" href onclick="backToList()">Comikka</a>
+     			</div>
+
+  				<!-- Collect the nav links, forms, and other content for toggling -->
+  				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    				<ul class="nav navbar-nav navbar-right">
+      					<li >
+     	 					<input type="text" data-type="search" data-theme="b" value="" id="keywordSearch" 
+								 class="ui-input-text ui-body-a" data-mini="true">
+		 					<ul id="suggestions" data-role="listview" data-inset="true"></ul>
+      					</li>
+      					<li class="dropdown">
+					        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{'language' | translate }}<b class="caret"></b></a>
+        					<ul class="dropdown-menu">
+           						<li ng-repeat="language in languageList">
+			   						<a href="#" ng-click='changeLanguage(language)'  >{{language}}</a>
+								</li>
+        					</ul>
+      					</li>
+      					<li><a href="#loginDialog" data-rel="popup"    data-icon="check" >{{'signIn' | translate }}</a></li>
+      					<li><a href="#newUser" data-rel="popup"  	 data-icon="plus">{{'register' | translate }}</a></li>
+      					<li><a href="http://comikka.net/index.php/faq-general/faq-comic-fans" data-rel="popup"  data-icon="gear" target="_blank">{{'help' | translate }}</a></li>
+      					<!-- <li><a href="#" onclick="backToArtistList()" id="exitLink" >{{'exit' | translate }}</a></li> -->
+    				</ul>
+   					<a target="_blank" title="Share on Twitter"  
+   						 href="http://twitter.com/intent/tweet?text=Check Out Comikka Comics on Mobile!&hashtags=Comikka,mobileComics&url=http://www.comikka.com">
+   						 	<img alt="follow me on twitter" src="http://login.create.net/images/icons/user/twitter_30x30.png" border=0>
+   					</a>
+					<a target="_blank" title="Share on Facebook" 
+  						href="http://www.facebook.com/sharer/sharer.php?u=www.comikka.com">
+  							<img alt="follow me on facebook" src="http://login.create.net/images/icons/user/facebook_30x30.png" border=0>
+					</a>
+				</div><!-- /.navbar-collapse -->
+			</nav>
+			<!--  <div id="fb-root" >
+                <span id="fbloginBttn" onclick="userLogin()" ><a class="fb_button fb_button_medium"><span class="fb_button_text">Login with facebook</span></a></span>
+                </div> -->
+
+ 			<!-- <div id="language"style="font-size: small; margin-left: 82%;" >
+              		<ul>
+						<li ng-repeat="language in languageList">
+						   <a href="#" ng-click='changeLanguage(language)'  >{{language}}</a>
+						</li>
+					</ul>
+              </div> -->
+			<div data-role="content" style="text-align: center; clear: both; width: 100%; min-height: 100%;">
+	              <span style="text-align: center;font-weight: bold;color: green; display: none;" id="searchResultMsg"></span>
+				<div>
+					<ul id="masonry_Div" style="list-style: none; width: 100%">
+					</ul>
+				</div>
+				<!-- popups start -->
+			</div>
+
+				<!-- Search Dialog -->
+			<div data-role="popup" id="searchDialog" data-overlay-theme="a" 
+				data-theme="b" style="width: 250px;" class="ui-corner-all"
+				data-dismissible="false">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1 style="text-align: left; margin-left: 10px;">{{'search' | translate }}</h1>
+				</div>
+				<a href="#" data-rel="back" data-role="button" data-theme="b"
+					data-icon="delete" data-iconpos="notext" class="ui-btn-right">{{'close' || translate }}</a>
+					<div data-theme="b" class="ui-corner-bottom ui-content">
+						<div data-role="fieldcontain" style="margin-top: -5px;"> 
+							<input type="text" data-type="search" data-theme="b" value="" id="keywordSearch" 
+								 class="ui-input-text ui-body-a" data-mini="true">
+								<!-- <ul id="suggestions" data-role="listview" data-inset="true"></ul> -->
+							</div>
+					</div>
+			</div>
+			<!-- End of Search Dialog -->
+			<div data-role="popup" id="loginDialog" data-overlay-theme="a"
+				data-theme="b" style="width: 250px;" class="ui-corner-all"
+				data-dismissible="false" data-position-to="window">
+				
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1 style="text-align: left; margin-left: 10px;">{{'pleaseSignIn' | translate }}</h1>
+				</div>
+				<div data-theme="b" class="ui-corner-bottom ui-content">
+					<label for="un" class="ui-hidden-accessible">{{'userName' | translate }}</label> <input
+						type="text" name="userName" id="userName" value=""
+						placeholder="{{'userName' | translate }}" data-theme="b" /> <label for="un"
+						class="ui-hidden-accessible">{{'password' | translate }}</label> <input
+						type="password" name="password" id="password" value=""
+						placeholder="{{'password' | translate }}" /> <span id="msgbox" style="display: none"></span>
+					<br />
+					<!--   <label><input type="checkbox" name="stylogin" value="ON"/>Stay logged in</label> -->
+					<br />
+					<button type="button" class="btn btn-primary" id="signinButton"
+						tabIndex="0">
+						<i class="icon-ok-sign icon-white"></i> <span
+							class="ui-button-text">{{'signIn' | translate }}</span>
+					</button>
+
+
+					<a href="#forgotPasswordDialog" data-rel="popup" data-role="link"
+						data-icon="gear" tabIndex="0" onclick="resetMessages()">{{'forgotyourpssword' | translate }}</a>
+				</div>
+			</div>
+
+			<!-- new User -->
+
+			<div data-role="popup" id="newUser" data-url="home" data-position-to="window"
+				data-history="false" data-transition="pop" data-overlay-theme="a"
+				data-theme="b" style="width: 250px;" class="ui-corner-all">
+				
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1 style="text-align: left; margin-left: 10px;">{{'userRegistration' | translate }}</h1>
+				</div>
+				<a href="#" data-rel="back" data-role="button" data-theme="b"
+					data-icon="delete" data-iconpos="notext" class="ui-btn-right">{{'close' | translate }}</a>
+				<div data-theme="b" class="ui-corner-bottom ui-content"
+					data-role="content">
+
+					<label for="un" class="ui-hidden-accessible">{{'userName' | translate }}</label> 
+					<input 	type="text" name="userName" id="newUserName" value=""
+						placeholder="{{'userName' | translate }}" data-theme="b" /> 
+					<label for="un" class="ui-hidden-accessible">{{'password' | translate }}</label> 
+					<input type="password" name="password" id="newPassword" value=""
+						placeholder="{{'password' | translate }}" data-theme="b" /> 					
+					<label for="un" class="ui-hidden-accessible">{{'email' | translate }}</label>
+				    <input type="text" name="email" id="newEmail" value="" 
+						placeholder="{{'email' | translate }}" data-theme="b" /> 
+						
+					<span id="newMsgbox" style="display: none"></span> <br /> <br /> <br />
+
+					<!-- <a href="#" data-role="button" data-inline="true" id="create" data-transition="flow" data-theme="b" tabIndex="0">Create</a>  -->
+
+					<button type="button" class="btn btn-primary" id="createBtn"
+						tabIndex="0">
+						<i class="icon-ok-sign icon-white"></i> <span
+							class="ui-button-text">{{'create' | translate }}</span>
+					</button>
+
+				</div>
+			</div>
+
+
+			<!-- forgot password -->
+			<div data-role="popup" id="forgotPasswordDialog" data-url="home" data-position-to="window"
+				data-history="false" data-transition="pop" data-overlay-theme="a"
+				data-theme="b" style="width: 250px;" class="ui-corner-all">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1 style="text-align: left; margin-left: 10px;">{{'forgotPassword' | translate }}</h1>
+				</div>
+				<a href="#" data-rel="back" data-role="button" data-theme="b"
+					data-icon="delete" data-iconpos="notext" class="close ui-btn-right">{{'close' | translate }}</a>
+				<div data-role="content" data-theme="b"
+					class="ui-corner-bottom ui-content" id="forgetDiv">
+					<label for="un" class="ui-hidden-accessible">{{'email' | translate }}</label> 
+					<input type="text" name="email" id="email" value="" placeholder="{{'email' | translate }}" />
+
+
+					<span id="msgBox" style="display: none"></span> <br /> <br /> <br />
+					<button type="button" class="btn btn-primary" id="continueButton" 
+						tabIndex="0">
+						<i class="icon-ok-sign icon-white"></i> <span
+							class="ui-button-text">{{'continue' | translate }}</span>
+					</button>
+				</div>
+				<!-- for showing message -->
+				<!-- Retrieve password -->
+
+				<div data-role="content" data-theme="b"
+					class="ui-corner-bottom ui-content" id="retrieveDiv"
+					style="display: none;">
+					<span class="bold">{{'resetPasswordMsg' | translate }}</span>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div data-role="page" id="page2" style="margin: 0" data-theme="a" >
+		<div data-role="content" id="imageContentArea"
+			style="text-align: center; clear: both; width: 100%; height: 100%; padding: 0px; margin: 0px">
+
+			<div id="artImageView"
+				style="clear: both; margin: 0 auto; padding: 0px;">
+				<img id="artImgCont"
+					style="position: relative; float: left; display: block;" alt="Loading Image..."/>
+				
+				<div id="adNetworkContainer" style="display: none; ">
+				
+					<!-- <iframe src="AdNetwork/adFrame.html" width="728px" height="90px" frameborder="0" marginwidth ="0px" marginheight="0px" scrolling="no"></iframe> -->
+				</div>
+				
+				
+				<div id="tl" class="eventBox" onclick="prvImage()"
+					title="{{'tlTitle' | translate }}"></div>
+				<div id="tr" class="eventBox rb" style="left: 50%;"
+					onclick="nxtImage()" title="{{'trTitle' | translate }}"></div>
+				<a id="lftBxAnchor">
+					<div id="bl" class="eventBox" onclick="gotopanelPopup()" title=""></div>
+				</a> <a id="rgtBxAnchor">
+					<div id="br" class="eventBox rb" style="left: 50%;"
+						onclick="goToArtistList()" title=""></div>
+				</a>
+			</div>
+
+			<!-- go to panel pop up -->
+
+			<div data-role="popup" id="gotopanelPopup" data-url="artImageView"
+				data-history="false" data-transition="pop" data-overlay-theme="a"
+				data-theme="b" style="width: 170px; height: 170px;"
+				class="ui-corner-all">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1 style="text-align: left; margin-left: 10px;">{{'gotoPanel' | translate }}</h1>
+				</div>
+				<a href data-rel="back" data-role="button" data-theme="b"
+					data-icon="delete" data-iconpos="notext" class="close ui-btn-right">{{'close' | translate }}</a>
+				<div data-role="content" data-theme="b"
+					class="ui-corner-bottom ui-content" id="gotopanelDiv"
+					style="width: 168px; height: 100px;">
+					<!-- <div id="bl-goto" style="bottom: 0px;  width:130px;height: 100px;position: absolute;	" 
+								 data-role="content" data-theme="b" class="ui-corner-bottom ui-content"> -->
+					<input
+						style="width: 65px; height: 30px; text-align: center; float: left; border: none;"
+						type="text" name="name" id="bl-goto-text" value=""
+						data-mini="true" /> <input
+						style="width: 65px; height: 30px; text-align: center; float: left; border: none;"
+						type="text" name="name" id="lbl-count" value="" data-mini="true"
+						readonly="readonly" /> <br /> <br /> <a href="#"
+						data-role="button" data-inline="true" id="gotoButton"
+						data-transition="flow" data-theme="b" tabIndex="0"
+						style="height: 35px; width: 90px; text-align: center;margin-left: 15%;">{{'goto' | translate }}</a>
+					<!-- </div> -->
+
+				</div>
+				<a target="_blank" title="Share on Twitter"  id="yourLinkIdfotTwitter" href="">
+					<img alt="follow me on twitter" src="http://login.create.net/images/icons/user/twitter_30x30.png" border=0>
+				</a>
+				<a target="_blank" title="Share on fb"  id="yourLinkIdforFB" href="">
+					<img alt="follow me on facebook" src="http://login.create.net/images/icons/user/facebook_30x30.png" border=0>
+				</a>
+			</div>
+			<!--  ends popup  -->
+		</div>
+	</div>
+
+               <!--  Comic Description Page  -->
+
+	<div data-role="page" class="type-index" id="descriptionPage">
+		<nav class="navbar navbar-default" role="navigation">
+	  	<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+		  	  <a  class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-11">
+		     	 <span class="sr-only">Toggle navigation</span>
+		     	 <span class="icon-bar"></span>
+		     	 <span class="icon-bar"></span>
+			 	 <span class="icon-bar"></span>
+				</a>
+				<a class="navbar-brand" href onclick="backToArtistList()" >Comikka</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-11">
+				<ul class="nav navbar-nav navbar-right">
+					<li ><a href="#" onclick="loadComicsOfComic()">{{'gotoThisComic' | translate }}</a></li>
+		   			<li><a href="#" onclick="gotoSearchResult()" >{{'backTo' | translate }}&nbsp;
+						<span class="glyphicon glyphicon-search" style="position: relative;top: 0px;right: 0px;"></span>
+						&nbsp;&nbsp;{{'results' | translate }}</a>
+					</li>
+					<li><a href="#signinDialog" data-rel="popup"  >{{'logIn' | translate }}</a></li>
+		   			<!-- <li><a href="#" onclick="backToArtistList()" >{{'exit' | translate }}</a></li> -->
+		  	  </ul>
+			</div><!-- /.navbar-collapse -->
+		</nav>		
+		<div data-role="content" style="text-align: center; clear: both; width: 100%; height: 100%;">
+       		<span style="text-align: center;font-weight: bold;font-size: large;   " id="comicScreenName"></span>
+            <div style="margin-left: 20px;">
+            	<div>
+           			<ul id="comicImages" class="comicComic"></ul>
+                </div><br/>
+                <div style="margin: 20px;" id="comicDescription">   		</div>
+            </div>
+		</div>
+		<div data-role="popup" id="signinDialog" data-overlay-theme="a"
+			data-theme="b" style="width: 250px;" class="ui-corner-all"
+			data-dismissible="false">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1 style="text-align: left; margin-left: 10px;"></h1>
+				</div>
+				<div data-theme="b" class="ui-corner-bottom ui-content">
+					<label for="un" class="ui-hidden-accessible">{{'userName' | translate }}</label> <input
+						type="text" name="userName" id="userName1" value=""
+						placeholder="{{'userName' | translate }}" data-theme="b" /> <label for="un"
+						class="ui-hidden-accessible">{{'password' | translate }}</label> <input
+						type="password" name="password" id="password1" value=""
+						placeholder="{{'password' | translate }}" /> 
+						<span id="cMsgbox" style="display: none"></span>
+						<br />
+						<!--   <label><input type="checkbox" name="stylogin" value="ON"/>Stay logged in</label> -->
+						<br />
+							<button type="button" class="btn btn-primary" id="signinButton" onclick="userAuthentication()"	tabIndex="0">
+								<i class="icon-ok-sign icon-white"></i> <span
+									class="ui-button-text">{{'signIn' | translate }}</span>
+							</button>
+							<a href="#forgotPasswordDialog" data-rel="popup" data-role="link"
+								data-icon="gear" tabIndex="0" onclick="resetMessagesforComic()">{{'forgotyourpssword' | translate }}</a>
+				</div>
+		</div>
+		<!-- forgot password -->
+		<div data-role="popup" id="forgotPasswordDialog" data-url="home"
+			data-history="false" data-transition="pop" data-overlay-theme="a"
+			data-theme="b" style="width: 250px;" class="ui-corner-all">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1 style="text-align: left; margin-left: 10px;">{{'forgotPassword' | translate }}</h1>
+				</div>
+				<a href="#" data-rel="back" data-role="button" data-theme="b"
+					data-icon="delete" data-iconpos="notext" class="close ui-btn-right">{{'close' | translate }}</a>
+				<div data-role="content" data-theme="b"
+					class="ui-corner-bottom ui-content" id="forgetDiv1">
+					<label for="un" class="ui-hidden-accessible">{{'email' | translate }}</label> <input
+						type="text" name="email" id="email1" value="" placeholder="{{'email' | translate }}" />
+					<span id="msgBox1" style="display: none"></span> <br /> <br /> <br />
+					<button type="button" class="btn btn-primary" id="continueButton" onclick="forgotPasswordforDescription()"
+						tabIndex="0">
+						<i class="icon-ok-sign icon-white"></i> <span
+							class="ui-button-text">{{'continue' | translate }}</span>
+					</button>
+				</div>
+				<!-- for showing message -->
+				<!-- Retrieve password -->
+				<div data-role="content" data-theme="b"
+					class="ui-corner-bottom ui-content" id="retrieveDiv1"
+					style="display: none;">
+					<span class="bold">{{'resetPasswordMsg' | translate }}</span>
+				</div>
+		</div>
+	</div>
+
+				<!--  End of Comic Description Page -->
+
+	<!-- Piwik -->
+	<script type="text/javascript">
+  		var _paq = _paq || [];
+ 		 _paq.push(['trackPageView']);
+  		_paq.push(['enableLinkTracking']);
+ 		(function() {
+    		var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik-comikka.rhcloud.com/";
+    		_paq.push(['setTrackerUrl', u+'piwik.php']);
+    		_paq.push(['setSiteId', 1]);
+    		var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    		g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  		})();
+	</script>
+	<noscript><p><img src="http://piwik-comikka.rhcloud.com/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+	
+
+</body>
+</html>
+
+
+
+ 

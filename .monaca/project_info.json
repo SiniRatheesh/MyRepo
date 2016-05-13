@@ -1,6 +1,7 @@
 {
     "plugins": [
-        "mobi.monaca.plugins.Monaca"
+        "mobi.monaca.plugins.Monaca",
+        "mobi.monaca.plugins.Share@1.0.0"
     ],
     "framework_version": "3.5",
     "xcode_version": "6",
@@ -11,12 +12,15 @@
         "cordova-plugin-splashscreen@2.1.0",
         "cordova-plugin-network-information@1.0.1",
         "cordova-plugin-dialogs@1.1.1",
-        "cordova-plugin-device@1.0.1"
+        "cordova-plugin-device@1.0.1",
+        "cordova-plugin-file@3.0.0",
+        "cordova-plugin-file-transfer@1.3.0",
+        "cordova-plugin-inappbrowser@1.0.1"
     ],
     "title-ja": "",
-    "title-en": "Comikka",
+    "title-en": "MyApp",
     "description-ja": "",
-    "description-en": "To view comics",
+    "description-en": "",
     "category": "User Template",
     "platform": [
         "android",
@@ -24,5 +28,5 @@
         "winrt",
         "chrome"
     ],
-    "name": "generated-1462603968-57283e537e21935f6576caa6"
+    "name": "generated-1463024488-57283e537e21935f6576caa6"
 }

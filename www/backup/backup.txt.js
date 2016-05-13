@@ -66,5 +66,21 @@ else {
         });
     }
 }
+
+
+$(document).on('pagebeforeshow', '#welcome-page', function(event, docdata){  //jqm 1.4
+console.log('previous page was ' +docdata.prevPage.attr('id'));
+    if ( docdata.prevPage.attr('id') == 'signin-page') {
+        $(window).on("navigate", function (event, data) {
+            var direction = data.state.direction;
+            if (direction == 'back') {
+                event.preventDefault();
+                console.log('back button pressed');
+                //$( "body" ).pagecontainer( "change", "#explanation-short", { transition: "fade" });
+            }
+            $(window).off("navigate");
+        });
+    }
+});
     
     */

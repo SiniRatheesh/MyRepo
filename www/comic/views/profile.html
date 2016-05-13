@@ -1,0 +1,604 @@
+<!DOCTYPE HTML>
+<html ng-app="MyApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+	
+	<!--   Comikka ----->
+	
+	<meta name="propeller" content="9d22fcb4aedb7661bc4c09cf217a2893" />
+	<meta name="viewport"  content="width=device-width, initial-scale=1, maximum-scale=1">
+	
+	<!-- CSS---->
+    
+    <link rel="stylesheet" type="text/css" href="../js/lib/jqmobile/css/themes/default/jquery.mobile-1.2.0.min.css" />
+    <link rel="stylesheet" type="text/css" href="../js/lib/masonry/comikmasnry.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../css/profile-main.css"  />    
+    <link rel="stylesheet" type="text/css" href="../js/lib/bootstrap-3.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../js/lib/bootstrap-3.0.2/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="../js/lib/bootstrap-text-editor/bootstrap-wysihtml5-0.0.2.css"></link>
+    <link rel="stylesheet" type="text/css" href="../js/lib/bootstrap-text-editor/wysiwyg-color.css"></link>
+		
+	<!-- Scripts ---->
+		
+	<script type="text/javascript" src="../js/lib/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="../js/lib/common.js"></script>
+	<script type="text/javascript" src="../js/lib/masonry/masonry.pkgd.min.js"></script>
+	<script type="text/javascript" src="../js/lib/jqmobile/jqm.autoComplete.min-1.3.js"></script>
+	<script type="text/javascript" src="../js/lib/jqmobile/js/jquery.mobile-1.2.0.min.js"></script>
+	<script type="text/javascript" src="../js/lib/bootstrap-3.0.2/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/lib/bootstrap-3.0.2/dist/js/bootbox.min.js"></script>
+	<script type="text/javascript" src="../js/lib/solr/solr-common.js"></script>
+	<script type="text/javascript" src="../js/lib/jquery.tmpl.js"></script>
+	<script type="text/javascript" src="../js/lib/paging/lazy-loading.js"></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular.min.js" ></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular-bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular-translate.min.js" ></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular-translate-loader-static-files.min.js" ></script>
+	<script type="text/javascript" src="../js/lib/angular/angular-1.0.5/angular-translate-loader-url.min.js" ></script>
+	<script type="text/javascript" src="../js/lib/jquery-cookie-master/src/jquery.cookie.js"></script>
+	<script type="text/javascript" src="../js/lib/jquery.blImageCenter.js"></script>
+	<script type="text/javascript" src="../js/lib/angular/js/script.js"> </script>
+	<script type="text/javascript" src="../js/lib/imageload-common.js"></script>
+	<script type="text/javascript" src="../js/lib/ads.js"></script>
+	<script type="text/javascript" src="../js/lib/authentication.js"></script>
+	<script type="text/javascript" src="../js/lib/logOut.js"></script>
+	
+	<script src="../js/profile-main.js"></script>
+	
+	
+	<script id="personViewTpl" type="text/x-jquery-tmpl">
+ <li class="gallery-item" id="li-${id}" >
+  			<a href="#"  data-inline="true" data-theme="b" onclick="loadArtsOfComic('${id}',${artcount})">
+				<img src="${avatar}"  style="width:150px; height:150px"/>
+			</a>
+			<div style="width:100%;padding: 2px;">
+				<div style="float:left;">
+					<input type="checkbox" class="artistcb" id="cbArtist-${id}" data-id="${id}" onclick="addToFavouriteArtist('${id}')" style="width: 25px;
+						height: 25px;margin-left: -20px;margin-top: 3px;"></input>
+				</div>
+				<div style="margin-left: 25px;text-align:center;width:70% ;cursor:pointer"  title="${screenName}">
+					<label style="width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%">
+						{{if screenName}} ${screenName} {{else}} .  {{/if}} 
+					</label>
+				<div style="text-align: center;width: 100%;margin-top: -12px;">
+						{{if mobileArtist}} <span><i class="glyphicon glyphicon-phone" /></span> {{else}} <span><i class="glyphicon glyphicon-th-large" /></span>  {{/if}} 
+						(${artcount})
+				</div>
+				</div>
+				
+				<div  style="cursor:pointer;float:right; margin-top: -37px;">
+					<a href="#"  data-inline="true" data-theme="b" onclick="artistDescriptionPage('${id}')">
+						<img src="../img/whiteQmark.jpg" style="height:21px; width:21px"/>
+					</a>
+				</div>
+				
+			</div>
+	</li>
+</script>
+
+<script id="artistOwnViewTpl" type="text/x-jquery-tmpl">
+		  <li class="gallery-item" id="li-${id}" > 	
+  			<a href="#"  data-inline="true" data-theme="b" onclick="loadArts('${id}',${artcount},'ON')">
+				<img src="${avatar}"  style="width:150px; height:150px"/>
+			</a>
+		<div style="width:100%;padding: 2px;">
+				<div style="float:left;text-align:center;width:86%"><label>${screenName}</label></div>
+				
+			</div>
+	
+	</li>
+</script>
+
+<script id="artistViewTpl" type="text/x-jquery-tmpl">
+		  <li class="gallery-item" id="favli-${id}" > 	
+  			<a href="#"  data-inline="true" data-theme="b" onclick="loadArts('${id}',${artcount},'OFF')">
+				<img src="${avatar}"  style="width:150px; height:150px"/>
+			</a>
+		<div style="width:100%;padding: 2px;">
+				<div style="float:left;text-align:center;width:85%"><label>${screenName}</label></div>
+				<div style="float:right"> 
+					<i class="glyphicon glyphicon-trash"   onclick="deleteArtist(${id})"></i>
+				</div>
+			</div>
+	
+	</li>
+</script>
+<script id="keywordSearchView" type="text/x-jquery-tmpl">
+   <li class="ui-state-highlight">
+  	     <div>
+		   <a href="#"  data-inline="true" data-theme="b" onclick="loadArtsOfComic('${id}',${artcount})">
+		     	<img src="${avatar}"  style="width:150px; height:150px"/>
+	     	</a>
+	     </div>
+		<div style="width:100%;padding: 2px;">
+				<div style="float:left;">
+					<input type="checkbox" class="comicCb" id="cbComic-${id}" data-id="${id}" onclick="addComicToFavouriteArtist('${id}')"  style="width: 25px;
+						height: 25px;margin-left: -20px;margin-top: 2px;"></input>
+				</div>
+				<div style="margin-left: 25px;text-align:center;width:70%">
+					<label style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%">
+						{{if screenName}} ${screenName} {{else}} .  {{/if}} (${artcount})
+					</label>
+				</div>
+				<div  style="cursor:pointer;float:right; margin-top: -28px;">
+					<a href="#"  data-inline="true" data-theme="b" onclick="searchDescriptionPage('${id}')">
+						<img src="../img/whiteQmark.jpg" style="height:21px; width:21px"/>
+					</a>
+				</div>
+			</div>	  
+    </li>
+</script>
+
+	<script id="comicViewTmpl" type="text/x-jquery-tmpl">
+ 		<li  id="li-${id}" data-id="${id}" sortorder="${sortOrder}" data-json="${paramL($item)}">
+           <a   alt="${fileName}">
+					<img src="${s3ThumbUrl}" style=" height: 120px;width: 120px;margin-left: 10px;margin-top: 8px;"alt="${fileName}"/>
+			</a>
+			
+		</li>
+	</script>	
+	
+	</head>
+<body style="margin: 0" ng-controller='localeController' >
+
+	<!-- 
+	Messages
+	
+	 -->
+	<div data-role="page" class="type-index" id="home">
+
+	<!-- 	<div data-role="header" data-theme="b">
+			<h1>{{'favoriteArtists' | translate }}</h1>
+
+			<div style="height:37px;"></div>
+			<div data-role="controlgroup" data-type="horizontal"
+				class="ui-btn-right ui-shadow" data-corners="true">
+
+<a href="#searchDialog" data-rel="popup" data-role="button"   data-icon="search" >{{'search' | translate }}</a>
+				<a href="#artistList" data-rel="popup" data-role="button"
+					id="artistlist" data-icon="grid">{{'artistList' | translate }}</a> <a
+					href="#popupDialog" data-rel="popup" data-role="button"
+					data-icon="gear">{{'settings' | translate }} </a> <a href="#" id="logOut"
+					onclick="userLogOut()" data-icon="login" data-direction="reverse"
+					title="Click here to Logout" data-role="button">{{'logout' | translate }}</a>
+			</div>
+
+
+		</div> -->
+
+
+<nav class="navbar navbar-default" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <a  class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </a>
+      <a class="navbar-brand" href="#" onclick="backToList()" >Comikka</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-right">
+      <li>	
+      		<input type="text" data-type="search" data-theme="b" value="" id="keywordSearch" 
+			 class="ui-input-text ui-body-a" data-mini="true">
+			<!-- <ul id="suggestions" data-role="listview" data-inset="true"></ul> -->
+		</li>
+      <!-- <li id="artistLink" style="display: none;"><a href="#artistList" data-rel="popup"  data-icon="grid" >{{'artistList' | translate }}</a></li> -->
+      <li id="artistLink" style="display: none;"><a href="#" class="lnk" data-icon="grid" onclick="gotoArtistListPage()"  >{{'manageFavorites' | translate }}</a></li>
+      
+      <li><a href="#popupDialog" data-rel="popup" data-icon="gear" >{{'settings' | translate }} </a> </li>
+      <li><a href="http://comikka.net/index.php/faq-general/faq-comic-fans" data-rel="popup"  data-icon="gear" target="_blank" id="lnk" >{{'help' | translate }}</a></li>
+      <!-- <li><a href="#" onclick="backToFavorites()" data-icon="back" >{{'exit' | translate }}</a></li> -->
+      <li><a href="#" 	onclick="userLogOut()" data-icon="back" >{{'logout' | translate }}</a></li>      
+    </ul>
+   
+   
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+
+		<div data-role="content"
+			style="text-align: center; clear: both; width: 100%; height: 100%;">
+                <span style="text-align: center;font-weight: bold;color: green; display: none;" id="searchResultMsg"></span>
+			<!-- <div id="favComic" style="display: none;width:162px;">
+            	<input type="button" id=favComic data-mini="true" value="{{'addToMyFavorites' | translate }}" />
+        	</div> -->
+				
+
+			<!-- popups start -->
+
+<!-- Search Dialog -->
+
+		<!-- 	<div data-role="popup" id="searchDialog" data-overlay-theme="a"
+				data-theme="b" style="width: 250px;" class="ui-corner-all"
+				data-dismissible="false">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1 style="text-align: left; margin-left: 10px;">{{'search' | translate }}</h1>
+				</div>
+				<a href="#" data-rel="back" data-role="button" data-theme="b"
+					data-icon="delete" data-iconpos="notext" class="ui-btn-right">{{'close' | translate }}</a>
+				<div data-theme="b" class="ui-corner-bottom ui-content">
+						
+							<div data-role="fieldcontain" style="margin-top: -5px;"> 
+							<input type="text" data-type="search" data-theme="b" value="" id="keywordSearch" 
+								 class="ui-input-text ui-body-a" data-mini="true">
+								<ul id="suggestions" data-role="listview" data-inset="true"></ul>
+							</div>
+					
+				</div>
+			</div> -->
+
+				<!-- End of Search Dialog -->
+
+
+
+
+
+
+
+
+
+			<div data-role="popup" id="popupDialog" data-url="home"  data-position-to="window"
+				data-history="false" data-transition="pop" data-overlay-theme="a"
+				data-theme="b" style="max-width: 500px;" class="ui-corner-all">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1>{{'settings' | translate }}</h1>
+				</div>
+				<a href="#" data-rel="back" data-role="button" data-theme="b"
+					data-icon="delete" data-iconpos="notext" class="ui-btn-right">{{'close' | translate }}</a>
+				<div data-role="content" data-theme="b"
+					class="ui-corner-bottom ui-content">
+
+					<label for="un" class="ui-hidden-accessible">{{'password' | translate }}</label> 
+					<input type="password" name="password" id="password" value=""
+						placeholder="{{'password' | translate }}" /> 
+					<label for="un" class="ui-hidden-accessible">{{'confirmPassword' | translate }}</label>
+				    <input type="password" name="password" id="repassword" value=""
+						placeholder="{{'confirmPassword' | translate }}" /> 
+					<label for="un" class="ui-hidden-accessible">{{'email' | translate }}</label>
+				    <input type="text" name="email" id="email" value="" placeholder="{{'email' | translate }}" /> 
+				    <span id="resetMsg"></span> <br /> <br />
+					<!-- <a href="#" data-role="button" data-inline="true" id="resetButton" 
+				data-transition="flow" data-theme="b" tabIndex="0" style="height: 40px;"> Reset</a>  -->
+					<button type="button" class="btn btn-primary" id="resetButton"
+						tabIndex="0">
+						<i class="icon-ok-sign icon-white"></i> <span
+							class="ui-button-text">{{'reset' | translate }}</span>
+					</button>
+
+
+				</div>
+			</div>
+
+
+
+
+
+		<!-- 	<div data-role="popup" id="artistList" data-url="home" data-position-to="window"
+				data-history="false" data-transition="pop" data-overlay-theme="a"
+				data-theme="b" style="max-width: 500px;" class="ui-corner-all">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1>{{'artistList' | translate }}</h1>
+				</div>
+				<a href="#" data-rel="back" data-role="button" data-theme="b"
+					data-icon="delete" data-iconpos="notext" class="ui-btn-right">{{'close' | translate }}</a>
+				<div class="ui-corner-bottom ui-content"
+					style="max-width: 500px; height: 300px; overflow: auto;"
+					data-role="content">
+					<div>
+						<ul id="dpArtistList" style="list-style: none; width: 90%"></ul>
+					</div>
+
+				</div>
+				<p>
+					<span id="msg1" style="color: red; font-weight: bold;"></span>
+				</p>
+
+	
+
+				<div data-role="content" style="width: 250px;">
+					<p></p>
+					<button type="button" class="btn btn-primary" id="addArtist"
+						tabIndex="0">
+						<i class="icon-plus icon-white"></i> <span class="ui-button-text">{{'addToMyFavorites' | translate }}</span>
+					</button>
+
+				</div>
+
+			</div>
+			<!-- popups end --->
+
+
+
+			<div id="page1" style="position: absolute; margin-top: 0px">
+				
+				<div style="clear: both;">
+					<!--<div >
+				<h3>Favourite Artist List</h3>
+			</div>
+			-->
+			
+					<div style="width: 100%; float: right" class="startAfterAds">
+						<span id="msg" style="color: red; font-weight: bold;"></span>
+						<div>
+
+							<div>
+								<ul id="favouriteArtistList"
+									style="list-style: none; width: 100%"></ul>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+
+	</div>
+
+<div data-role="page" class="type-index" id="artistListPage">
+	
+				<nav class="navbar navbar-default" role="navigation">
+			  <!-- Brand and toggle get grouped for better mobile display -->
+			  <div class="navbar-header">
+			    
+			    <a class="navbar-brand" href onclick="backToFavorites()" >Comikka</a>
+			  </div>
+			
+
+			</nav>	
+	
+	
+	<div data-role="content" >
+			<div style="text-align: center;">
+					<h1>{{'manageFavorites' | translate }}</h1>
+				</div>
+				<div>
+					<div style="text-align: center;float: left;">
+						<ul id="dpArtistList" style="list-style: none; width: 100%"></ul>
+					</div>					
+					<span id="msg1" style="color: red; font-weight: bold;"></span>
+					<!-- <div style="text-align: center;float: right;">						
+						<button type="button" class="btn btn-primary" id="addArtist"
+							tabIndex="0">
+							<i class="icon-plus icon-white"></i> <span class="ui-button-text">{{'addToMyFavorites' | translate }}</span>
+						</button>	
+					</div> -->
+				
+				
+				</div>
+				
+	
+	</div>
+</div>
+
+
+
+	
+
+	<div data-role="page" id="page2" style="margin: 0" data-theme="a" >
+
+		<div data-role="content" id="imageContentArea"
+			style="text-align: center; clear: both; width: 100%; height: 100%; padding: 0px; margin: 0px">
+
+			<div id="artImageView"
+				style="clear: both; margin: 0 auto; padding: 0px;">
+				<img id="artImgCont"
+					style="position: relative; float: left; display: block;" />
+				
+				<!--  Ad Network ad  -->
+				<div id="adNetworkContainer" style="display: none;">
+					<script type="text/javascript" src="AdNetwork/adNetwork.js"></script>
+					<script type="text/javascript" src="http://c.greystripe.com/gsswf/ad.js"></script>
+				</div>
+				
+				
+				<!--  Ad Network ad  -->
+				<div id="tl" class="eventBox" onclick="prvImage()"
+					title="{{'tlTitle' | translate }}"></div>
+				<div id="tr" class="eventBox rb" style="left: 50%;"
+					onclick="nxtImage()" title="{{'trTitle' | translate }}"></div>
+				<a id="lftBxAnchor">
+					<div id="bl" class="eventBox" onclick="gotopanelPopup()" title=""></div>
+				</a> <a id="rgtBxAnchor">
+					<div id="br" class="eventBox rb" style="left: 50%;"
+						onclick="goToArtistList()" title=""></div>
+				</a>
+			</div>
+
+			<!-- go to panel pop up -->
+
+
+			<div data-role="popup" id="gotopanelPopup" data-url="artImageView"
+				data-history="false" data-transition="pop" data-overlay-theme="a"
+				data-theme="b" style="width: 225px; height: 200px;"
+				class="ui-corner-all">
+				<div data-role="header" data-theme="b" class="ui-corner-top">
+					<h1 style="text-align: left; margin-left: 10px;">{{'gotoPanel' | translate }}</h1>
+				</div>
+				<a href data-rel="back" data-role="button" data-theme="b"
+					data-icon="delete" data-iconpos="notext" class="ui-btn-right" style="height: 28px;width: 26px;">{{'close' | translate }}</a>
+				<div data-role="content" data-theme="b"
+					class="ui-corner-bottom ui-content" id="gotopanelDiv"
+					style="width: 215px; height: 152px;margin-top: 10px;">
+					<!-- <div id="bl-goto" style="bottom: 0px;  width:130px;height: 100px;position: absolute;	" 
+								 data-role="content" data-theme="b" class="ui-corner-bottom ui-content"> -->
+
+					<input
+						style="width: 92px; height: 42px; text-align: center; float: left; border: none;"
+						type="text" name="name" id="bl-goto-text" value=""
+						data-mini="true" />
+						
+					 <input
+						style="width: 92px; height: 42px; text-align: center; float: left; border: none;"
+						type="text" name="name" id="lbl-count" value="" data-mini="true"
+						readonly="readonly" /> 
+						
+					<div style="text-align: center;">
+							<a href="#"
+						data-role="button" data-inline="true" id="gotoButton"
+						data-transition="flow" data-theme="b" tabIndex="0"
+						style="height: 46px; width: 90px; text-align: center;margin-top: 20px;">{{'goto' | translate }}</a>
+					</div>
+					
+					 
+					<!-- </div> -->
+
+				</div>
+
+			</div>
+
+
+			<!--  ends popup  -->
+
+
+
+		</div>
+	</div>
+
+<!--  Comic Description Page  -->
+
+           
+
+	<div data-role="page" class="type-index" id="descriptionPage">
+			
+			<nav class="navbar navbar-default" role="navigation">
+			  <!-- Brand and toggle get grouped for better mobile display -->
+			  <div class="navbar-header">
+			    <a  class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-11">
+			      <span class="sr-only">Toggle navigation</span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			      <span class="icon-bar"></span>
+			    </a>
+			    <a class="navbar-brand" href onclick="backToFavorites()" >Comikka</a>
+			  </div>
+			
+			  <!-- Collect the nav links, forms, and other content for toggling -->
+			  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-11">
+			    <ul class="nav navbar-nav navbar-right">
+					<li><a href="#" onclick="loadComicsOfComic()">{{'gotoThisComic' | translate }}</a></li>
+					<li id="backLink" >
+						<a href="#" onclick="gotoSearchResult()" >{{'backTo' | translate }}&nbsp;
+						<span class="glyphicon glyphicon-search"></span>&nbsp;&nbsp;{{'results' | translate }}
+						</a>
+					</li>
+					<li id="backToArtistLink" style="display: none;">
+						<a href="#" onclick="goBacktoArtistList()" >{{'manageFavorites' | translate }}</a>
+					</li>
+					<li><a href="#" onclick="comicToFavorites()" >{{'addToFavorites' | translate }}</a></li>
+					<!-- <li><a href="#" onclick="backToFavorites()" >{{'exit' | translate }}</a></li> -->
+				</ul>
+			   
+			   
+			  </div><!-- /.navbar-collapse -->
+			</nav>		
+			
+			
+	
+
+			<div data-role="content"
+				style="text-align: center; clear: both; width: 100%; height: 100%;">
+
+               
+                   		<span style="text-align: center;font-weight: bold;font-size: large;   " id="comicScreenName"></span>
+                   <div style="margin-left: 20px;">
+                   		<div>
+                   			<ul id="comicImages" class="comicComic">
+							</ul>
+                   		</div>
+                   		<div style="margin: 20px;" id="comicDescription" >
+                   		</div>
+                   
+                   </div>
+						
+				 
+				
+				</div>      
+	
+
+
+		
+		</div>
+
+				<!--  End of Comic Description Page -->
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik-comikka.rhcloud.com/" : "http://piwik-comikka.rhcloud.com/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+/* try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {} */
+
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+function piwikTrack(){
+	try {
+		piwikTracker.setCustomVariable (2, "SESSIONID", LOGGED_IN_USER.SESSION_ID, "visit")
+		piwikTracker.trackPageView();
+		piwikTracker.enableLinkTracking();
+		
+		setTimeout('trackVisitor()', 500);
+	} catch( err ) {}
+}
+</script><noscript><p><img src="http://piwik-comikka.rhcloud.com/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+<!-- Piwik 
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u=(("https:" == document.location.protocol) ? "https" : "http") + "://piwik-comikka.rhcloud.com/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+    g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    setTimeout('trackVisitor()', 500);
+  })();
+</script>
+<noscript><p><img src="http://piwik-comikka.rhcloud.com/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+ End Piwik Code -->
+
+	<!-- Piwik -->
+	<script type="text/javascript">
+//var pkBaseURL = (("https:" == document.location.protocol) ? "https://208.89.210.151/piwik/" : "http://208.89.210.151/piwik/");
+//document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+	<script type="text/javascript">
+/* try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {} */
+
+//var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+/* function piwikTrack(){
+	try {
+		piwikTracker.setCustomVariable (2, "SESSIONID", LOGGED_IN_USER.SESSION_ID, "visit")
+		piwikTracker.trackPageView();
+		piwikTracker.enableLinkTracking();
+		
+		setTimeout('trackVisitor()', 500);
+	} catch( err ) {} 
+} */
+</script>
+	<noscript>
+		<p>
+			<!-- <img src="http://208.89.210.151/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p> -->
+	</noscript>
+	<!-- End Piwik Tracking Code -->
+</body>
+</html>

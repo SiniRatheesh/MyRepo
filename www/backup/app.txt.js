@@ -1,19 +1,22 @@
+   // document.addEventListener("deviceready", onDeviceReady, false);
+   
+   
     function onLoad() {
         document.addEventListener("deviceready", onDeviceReady, false);        
     }    
     
-    function onDeviceReady() {   
-        document.addEventListener("backbutton", onBackButtonCallback, false);
+    function onDeviceReady() {       
         var networkState = checkConnection();        
         if (networkState == Connection.NONE) {       
             window.location="404.html";
         } else {
-            window.location="comic/views/home.html";
+            window.location="http://www.comikka.com";
         }
+        document.addEventListener("backbutton", onBackKeyDown(), false);
     } 
     
-    function onBackButtonCallback() {  
-        alert('onBackButtonCallback.. app.js....');
+    function onBackKeyDown() {        
+        alert('backbutton pressed..');
         exitAppPopup();
     }
 
@@ -33,7 +36,8 @@
           
     }
     
-  /*  function exitAppPopup() {
+    function exitAppPopup() {
+        alert('exit popup..')
         navigator.notification.confirm(
             "Do you really want to close this app?", 
             function(buttonIndex){
@@ -45,6 +49,7 @@
     };
 
     function ConfirmExit(stat){
+          alert('confirming..')
         if(stat == "1"){
              alert('exiting.....');
             navigator.app.exitApp();
@@ -52,9 +57,7 @@
             return;
         };
     };
-     
-     
-     */
+    
 
            
         

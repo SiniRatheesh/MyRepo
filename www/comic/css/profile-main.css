@@ -1,0 +1,146 @@
+.ui-field-contain  .ui-field-contain textarea.ui-input-text, .ui-field-contain .ui-input-search {
+          top: 12px;
+}
+.comicComic {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	background-color: #FFC0CB;
+}
+
+.comicComic li {
+	margin: 18px 3px 27px 5px;
+	padding: 1px;
+	width: 150px;
+	height: 150px;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+	display: inline;
+	
+}
+.eventBox {
+	position: absolute;
+	float: left;
+	width: 50%;
+	height: 50%;
+	cursor: pointer;
+}
+
+.hover {
+	border: 1px solid red;
+}
+
+#favouriteArtistList li {
+	margin: 18px 20px 27px 5px;
+	padding: 1px;
+	width: 150px;
+	height: 190px;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+	display: inline;
+}
+
+#favouriteArtistList li:hover {
+	background: gray;
+	color: black;
+}
+
+#artImgCont{
+top:0 !important;
+}
+
+.container {
+	width: 300px;
+}
+
+/* The white background content wrapper */
+.container>.content {
+	background-color: #fff;
+	padding: 20px;
+	margin: 0 -20px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	border-radius: 10px 10px 10px 10px;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+}
+
+.login-form {
+	margin-left: 65px;
+}
+
+legend {
+	margin-right: -50px;
+	font-weight: bold;
+	color: #404040;
+}
+
+.ui-widget-overlay {
+	background: black;
+}
+
+.ui-widget {
+	border: 0;
+}
+
+#closeDialog {
+	display: block;
+	float: right;
+	margin-left: 450px;
+}
+
+#closeSettingsDialog {
+	display: block;
+	float: right;
+	margin-left: 450px;
+}
+
+#closePasswordDialog {
+	display: block;
+	float: right;
+	margin-left: 450px;
+}
+
+#closeEmailDialog {
+	display: block;
+	float: right;
+	margin-left: 450px;
+}
+#lnk{
+ color: #777777;
+
+}
+
+#lnk:hover{
+ color: #333333 !important;
+
+}
+
+#dpArtistList li {
+	margin: 18px 3px 27px 5px;
+	padding: 1px;
+	width: 150px;
+	height: 150px;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+	display: inline;
+}
+#dpArtistList {
+    height: 90%;
+    overflow: inherit;
+    width: 490px;
+}
+#favouriteArtistList li {
+	margin: 18px 3px 27px 5px;
+	padding: 1px;
+	width: 150px;
+	height: 150px;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+	display: inline;
+}
